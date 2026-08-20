@@ -12,11 +12,11 @@
       "schematics": {
         "@schematics/angular:component": {
           "type": "component",
-          "standalone": false
+          "standalone": true
         },
         "@schematics/angular:directive": {
           "type": "directive",
-          "standalone": false
+          "standalone": true
         },
         "@schematics/angular:service": {
           "type": "service"
@@ -32,7 +32,7 @@
         },
         "@schematics/angular:pipe": {
           "typeSeparator": ".",
-          "standalone": false
+          "standalone": true
         },
         "@schematics/angular:resolver": {
           "typeSeparator": "."
@@ -53,9 +53,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ]
+            "styles": ["src/styles.css"]
           },
           "configurations": {
             "production": {
