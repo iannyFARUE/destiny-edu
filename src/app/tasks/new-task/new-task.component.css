@@ -41,6 +41,12 @@ textarea {
   background-color: #d0c2e1;
 }
 
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+  border-color: #e35b5b;
+  background-color: #edd5d5;
+}
+
 .actions {
   margin: 1rem 0 0;
   display: flex;
