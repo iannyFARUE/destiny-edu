@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { TasksService } from '../tasks.service';
 
@@ -7,13 +7,14 @@ import { TasksService } from '../tasks.service';
   imports: [FormsModule],
   templateUrl: './new-task.component.html',
   styleUrl: './new-task.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewTaskComponent {
-  @Input({ required: true }) userId!: string;
-  @Output() close = new EventEmitter<void>();
-  enteredTitle = '';
-  enteredSummary = '';
-  enteredDate = '';
+  userId = input.required<string>();
+  close = output<void>();
+  enteredTitle = signal('');
+  enteredSummary = signal('');
+  enteredDate = signal('');
   private tasksService = inject(TasksService);
 
   onCancel() {
@@ -27,11 +28,11 @@ export class NewTaskComponent {
 
     this.tasksService.addTask(
       {
-        title: this.enteredTitle,
-        summary: this.enteredSummary,
-        date: this.enteredDate,
+        title: this.enteredTitle(),
+        summary: this.enteredSummary(),
+        date: this.enteredDate(),
       },
-      this.userId,
+      this.userId(),
     );
     this.close.emit();
   }

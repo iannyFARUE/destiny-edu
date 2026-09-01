@@ -1,25 +1,23 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { HeaderComponent } from './header/header.component';
 import { UserComponent } from './user/user.component';
 import { DUMMY_USERS } from './dummy-users';
 import { TasksComponent } from './tasks/tasks.component';
+
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [HeaderComponent, UserComponent, TasksComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  title = 'destiny-edu';
   users = DUMMY_USERS;
-  selectedUserId?: string;
+  selectedUserId = signal<string | undefined>(undefined);
 
-  get selectedUser() {
-    return this.users.find((user) => user.id === this.selectedUserId);
-  }
+  selectedUser = computed(() => this.users.find((user) => user.id === this.selectedUserId()));
 
   onSelectUser(id: string) {
-    this.selectedUserId = id;
+    this.selectedUserId.set(id);
   }
 }

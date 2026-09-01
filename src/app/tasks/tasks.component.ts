@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { TaskComponent } from './task/task.component';
 import { NewTaskComponent } from './new-task/new-task.component';
 import { TasksService } from './tasks.service';
@@ -8,23 +8,24 @@ import { TasksService } from './tasks.service';
   imports: [TaskComponent, NewTaskComponent],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TasksComponent {
-  @Input({ required: true }) name!: string;
-  @Input({ required: true }) userId!: string;
-  isAddingTask = false;
+  name = input.required<string>();
+  userId = input.required<string>();
+  isAddingTask = signal(false);
 
-  constructor(private taskService: TasksService) {}
+  private tasksService = inject(TasksService);
 
-  get selectedUserTasks() {
-    return this.taskService.getUserTasks(this.userId);
-  }
+  selectedUserTasks = computed(() =>
+    this.tasksService.allTasks().filter((task) => task.userId === this.userId()),
+  );
 
   onStartAddTask() {
-    this.isAddingTask = true;
+    this.isAddingTask.set(true);
   }
 
   onCloseAddTask() {
-    this.isAddingTask = false;
+    this.isAddingTask.set(false);
   }
 }

@@ -1,22 +1,20 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { type User } from './user.model';
 
 @Component({
   selector: 'app-user',
-  standalone: true,
   templateUrl: './user.component.html',
   styleUrl: './user.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserComponent {
-  @Input({ required: true }) user!: User;
-  @Output() select = new EventEmitter<string>();
-  @Input({ required: true }) selected!: boolean;
+  user = input.required<User>();
+  selected = input.required<boolean>();
+  userSelected = output<string>();
 
-  get imagePath(): string {
-    return 'assets/users/' + this.user.avatar;
-  }
+  imagePath = computed(() => 'assets/users/' + this.user().avatar);
 
   onSelectUser(): void {
-    this.select.emit(this.user.id);
+    this.userSelected.emit(this.user().id);
   }
 }
