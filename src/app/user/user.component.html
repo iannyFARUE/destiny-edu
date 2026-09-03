@@ -2,5 +2,8 @@
   <button [class.active]="selected()" (click)="onSelectUser()">
     <img [src]="imagePath()" [alt]="user().name" />
     <span>{{ user().name }}</span>
+    @if (openTaskCount() > 0) {
+      <span class="task-count">{{ openTaskCount() }}</span>
+    }
   </button>
 </div>

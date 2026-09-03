@@ -11,6 +11,7 @@ const INITIAL_TASKS: Task[] = [
     title: 'Master Angular',
     summary: 'Learn all the basic and advanced features of Angular & how to apply them.',
     dueDate: '2025-12-31',
+    completed: false,
   },
   {
     id: 't2',
@@ -18,6 +19,7 @@ const INITIAL_TASKS: Task[] = [
     title: 'Build first prototype',
     summary: 'Build a first prototype of the online shop website',
     dueDate: '2024-05-31',
+    completed: true,
   },
   {
     id: 't3',
@@ -25,8 +27,25 @@ const INITIAL_TASKS: Task[] = [
     title: 'Prepare issue template',
     summary: 'Prepare and describe an issue template which will help with project management',
     dueDate: '2024-06-15',
+    completed: false,
   },
 ];
+
+function isStoredTask(value: unknown): value is Record<string, unknown> & Omit<Task, 'completed'> {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+
+  const task = value as Record<string, unknown>;
+
+  return (
+    typeof task['id'] === 'string' &&
+    typeof task['userId'] === 'string' &&
+    typeof task['title'] === 'string' &&
+    typeof task['summary'] === 'string' &&
+    typeof task['dueDate'] === 'string'
+  );
+}
 
 @Injectable({ providedIn: 'root' })
 export class TasksService {
@@ -41,9 +60,17 @@ export class TasksService {
         title: taskData.title,
         summary: taskData.summary,
         dueDate: taskData.date,
+        completed: false,
       },
       ...tasks,
     ]);
+    this.saveTasks();
+  }
+
+  toggleTaskCompletion(id: string) {
+    this.tasks.update((tasks) =>
+      tasks.map((task) => (task.id === id ? { ...task, completed: !task.completed } : task)),
+    );
     this.saveTasks();
   }
 
@@ -60,7 +87,11 @@ export class TasksService {
         const parsed: unknown = JSON.parse(stored);
 
         if (Array.isArray(parsed)) {
-          return parsed;
+          // Tasks saved before completion tracking existed have no `completed` field.
+          return parsed.filter(isStoredTask).map((task) => ({
+            ...task,
+            completed: task['completed'] === true,
+          }));
         }
       }
     } catch {

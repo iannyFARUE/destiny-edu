@@ -1,10 +1,16 @@
 <app-card>
-  <article>
+  <article [class.completed]="task().completed">
     <h2>{{ task().title }}</h2>
-    <time>{{ task().dueDate | date: 'fullDate' }}</time>
+    <time [class.overdue]="isOverdue()">
+      {{ task().dueDate | date: 'fullDate' }}
+      @if (isOverdue()) {
+        <span class="overdue-badge">Overdue</span>
+      }
+    </time>
     <p>{{ task().summary }}</p>
     <p class="actions">
-      <button (click)="onCompleteTask()">Complete</button>
+      <button class="delete" (click)="onDeleteTask()">Delete</button>
+      <button (click)="onToggleComplete()">{{ task().completed ? 'Reopen' : 'Complete' }}</button>
     </p>
   </article>
 </app-card>

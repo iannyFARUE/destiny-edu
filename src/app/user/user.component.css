@@ -39,3 +39,20 @@ span {
   font-size: 0.8rem;
   font-weight: normal;
 }
+
+.task-count {
+  margin-left: auto;
+  padding: 0.1rem 0.5rem;
+  border-radius: 10px;
+  background-color: #9965dd;
+  color: #150722;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+button:hover .task-count,
+button:active .task-count,
+.active .task-count {
+  background-color: #150722;
+  color: #c3b3d1;
+}

@@ -41,6 +41,41 @@ menu button:active {
   background-color: #a565dd;
 }
 
+.filters {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.filters button {
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem 0.75rem;
+  background-color: #4d3e69;
+  color: #c3b3d1;
+  transition: all 0.2s ease;
+}
+
+.filters button:hover,
+.filters button:active {
+  background-color: #5d4a7d;
+}
+
+.filters button.active {
+  background-color: #9965dd;
+  color: #150722;
+}
+
+.empty {
+  color: #a48fbe;
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 2rem 0;
+}
+
 ul {
   list-style: none;
   margin: 1rem 0;

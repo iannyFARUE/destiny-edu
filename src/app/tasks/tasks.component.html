@@ -9,11 +9,37 @@
     </menu>
   </header>
 
-  <ul>
-    @for (task of selectedUserTasks(); track task.id) {
-      <li>
-        <app-task [task]="task" />
-      </li>
-    }
-  </ul>
+  <div class="filters">
+    <button [class.active]="filter() === 'open'" (click)="onSetFilter('open')">
+      Open ({{ openCount() }})
+    </button>
+    <button [class.active]="filter() === 'completed'" (click)="onSetFilter('completed')">
+      Done ({{ completedCount() }})
+    </button>
+    <button [class.active]="filter() === 'all'" (click)="onSetFilter('all')">All</button>
+  </div>
+
+  @if (selectedUserTasks().length > 0) {
+    <ul>
+      @for (task of selectedUserTasks(); track task.id) {
+        <li>
+          <app-task [task]="task" />
+        </li>
+      }
+    </ul>
+  } @else {
+    <p class="empty">
+      @switch (filter()) {
+        @case ('open') {
+          All caught up — no open tasks!
+        }
+        @case ('completed') {
+          Nothing completed yet.
+        }
+        @default {
+          No tasks yet — add one to get started.
+        }
+      }
+    </p>
+  }
 </section>
